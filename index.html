@@ -3,42 +3,418 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Cube Jump</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="container">
+    <!-- ================= MENU ================= -->
 
-        <div class="cube">■</div>
+    <div id="menu" class="screen">
 
-        <h1>CUBE JUMP</h1>
+        <h1 class="gameTitle">
+            CUBE <span>JUMP</span>
+        </h1>
 
-        <p class="subtitle">
-            Jump. Dodge. Collect Coins.
-        </p>
-
-        <p>🎮 ითამაშე Cube Jump Android-ზე!</p>
-
-        <a class="download" href="app-release.apk" download>
-            ⬇ DOWNLOAD APK
-        </a>
-
-        <div class="info">
-            <h2>🎮 თამაშის შესახებ</h2>
-
-            <p>
-                აახტუნავე კუბი, მოერიდე დაბრკოლებებს,
-                შეაგროვე ქოინები და გახსენი ახალი დიზაინები.
-            </p>
+        <div class="coinCounter">
+            🪙 <span id="menuCoins">0</span>
         </div>
 
-        <p class="developer">
-            👨‍💻 Cube Jump
-        </p>
+        <button id="startButton" class="mainButton startButton">
+            ▶ დაწყება
+        </button>
+
+        <button
+            id="shopButton"
+            class="mainButton shopButton"
+            onclick="openShop()"
+        >
+            🛒 SHOP
+        </button>
+
+        <div class="aboutMe">
+
+            <h2>👨‍💻 ვინ ვარ მე?</h2>
+
+            <p>
+                მე ვარ ახალი დამწყები დეველოპერი,
+                რომელიც ქმნის თამაშებს და სხვა
+                საინტერესო პროექტებს.
+            </p>
+
+            <p>
+                ეს არის ჩემი ერთ-ერთი პირველი
+                2D თამაში. 🎮
+            </p>
+
+        </div>
+
+        <div class="bestScore">
+            🏆 რეკორდი: <span id="best">0</span>
+        </div>
 
     </div>
+
+
+    <!-- ================= GAME ================= -->
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="gameUI">
+
+        <div class="gameCoins">
+            🪙 <span id="shopCoinsNumber">0</span>
+        </div>
+
+        <div class="score">
+            <span id="score">0</span>
+        </div>
+
+    </div>
+
+
+    <!-- ================= GAME OVER ================= -->
+
+    <div id="gameOver" class="screen">
+
+        <h1>GAME OVER</h1>
+
+        <p>
+            ქულა:
+            <strong id="finalScore">0</strong>
+        </p>
+
+        <p>
+            რეკორდი:
+            <strong id="finalBest">0</strong>
+        </p>
+
+        <button
+            id="restartButton"
+            class="mainButton startButton"
+        >
+            🔄 თავიდან
+        </button>
+
+        <button
+            class="backButton"
+            onclick="goToMenu()"
+        >
+            ← მენიუ
+        </button>
+
+    </div>
+
+
+    <!-- ================= SHOP ================= -->
+
+    <div id="shop" class="shopScreen">
+
+        <div class="shopHeader">
+
+            <button
+                class="backIcon"
+                onclick="closeShop()"
+            >
+                ←
+            </button>
+
+            <h1>🛒 SHOP</h1>
+
+            <div class="shopCoinCounter">
+                🪙 <span id="shopCoins">0</span>
+            </div>
+
+        </div>
+
+
+        <h2 class="sectionTitle">
+            🎨 CUBE SKINS
+        </h2>
+<div class="shopCard">
+
+    <div class="cubePreview blueCube"></div>
+
+    <h3>🔵 Blue Cube</h3>
+
+    <p>🪙 უფასო</p>
+
+    <button
+        class="buyButton skinButton"
+        data-skin="blue"
+        onclick="selectSkin('blue')"
+    >
+        არჩევა
+    </button>
+
+</div>
+
+        <div class="shopGrid">
+
+            <!-- RED -->
+
+            <div class="shopCard">
+
+                <div class="cubePreview redCube"></div>
+
+                <h3>🔴 Red Cube</h3>
+
+                <p>🪙 50</p>
+
+                <button
+                    class="buyButton skinButton"
+                    data-skin="red"
+                    onclick="buySkin('red', 50)"
+                >
+                    🪙 50
+                </button>
+
+            </div>
+
+
+            <!-- GREEN -->
+
+            <div class="shopCard">
+
+                <div class="cubePreview greenCube"></div>
+
+                <h3>🟢 Green Cube</h3>
+
+                <p>🪙 100</p>
+
+                <button
+                    class="buyButton skinButton"
+                    data-skin="green"
+                    onclick="buySkin('green', 100)"
+                >
+                    🪙 100
+                </button>
+
+            </div>
+
+
+            <!-- PURPLE -->
+
+            <div class="shopCard">
+
+                <div class="cubePreview purpleCube"></div>
+
+                <h3>🟣 Purple Cube</h3>
+
+                <p>🪙 150</p>
+
+                <button
+                    class="buyButton skinButton"
+                    data-skin="purple"
+                    onclick="buySkin('purple', 150)"
+                >
+                    🪙 150
+                </button>
+
+            </div>
+
+
+            <!-- GOLD -->
+
+            <div class="shopCard">
+
+                <div class="cubePreview goldCube"></div>
+
+                <h3>🟡 Gold Cube</h3>
+
+                <p>🪙 250</p>
+
+                <button
+                    class="buyButton skinButton"
+                    data-skin="gold"
+                    onclick="buySkin('gold', 250)"
+                >
+                    🪙 250
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BACKGROUNDS ================= -->
+
+        <h2 class="sectionTitle">
+            🌄 BACKGROUNDS
+        </h2>
+
+        <button
+            class="backgroundOpenButton"
+            onclick="openBackgroundShop()"
+        >
+            🌄 BACKGROUNDS
+        </button>
+
+    </div>
+
+
+    <!-- ================= BACKGROUND SHOP ================= -->
+
+    <div id="backgroundShop" class="backgroundScreen">
+
+        <div class="shopHeader">
+
+            <button
+                class="backIcon"
+                onclick="closeBackgroundShop()"
+            >
+                ←
+            </button>
+
+            <h1>🌄 BACKGROUNDS</h1>
+
+            <div class="shopCoinCounter">
+                🪙 <span id="backgroundCoins">0</span>
+            </div>
+
+        </div>
+
+
+        <div class="backgroundGrid">
+
+            <!-- SKY -->
+
+            <div class="backgroundCard">
+
+                <div class="backgroundImage skyBackground">
+
+                    <div class="sun"></div>
+
+                    <div class="cloud cloud1"></div>
+                    <div class="cloud cloud2"></div>
+                    <div class="cloud cloud3"></div>
+
+                    <div class="mountains"></div>
+
+                </div>
+
+                <h2>☁️ Sky</h2>
+
+                <p>უფასო</p>
+
+                <button
+                    class="backgroundButtonSelect"
+                    data-background="sky"
+                    onclick="selectBackground('sky')"
+                >
+                    არჩევა
+                </button>
+
+            </div>
+
+
+            <!-- HALLOWEEN -->
+
+            <div class="backgroundCard">
+
+                <div class="backgroundImage halloweenBackground">
+
+                    <div class="moon"></div>
+
+                    <div class="bat bat1">🦇</div>
+                    <div class="bat bat2">🦇</div>
+
+                    <div class="pumpkin">
+                        🎃
+                    </div>
+
+                    <div class="castle">
+                        🏰
+                    </div>
+
+                </div>
+
+                <h2>🎃 Halloween</h2>
+
+                <p>🪙 150</p>
+
+                <button
+                    class="backgroundButtonSelect"
+                    data-background="halloween"
+                    onclick="buyBackground('halloween', 150)"
+                >
+                    🪙 150
+                </button>
+
+            </div>
+
+
+            <!-- GALAXY -->
+
+            <div class="backgroundCard">
+
+                <div class="backgroundImage galaxyBackground">
+
+                    <div class="planet planet1"></div>
+                    <div class="planet planet2"></div>
+
+                    <div class="galaxyGlow"></div>
+
+                    <div class="stars"></div>
+
+                </div>
+
+                <h2>🌌 Galaxy</h2>
+
+                <p>🪙 300</p>
+
+                <button
+                    class="backgroundButtonSelect"
+                    data-background="galaxy"
+                    onclick="buyBackground('galaxy', 300)"
+                >
+                    🪙 300
+                </button>
+
+            </div>
+
+
+            <!-- SNOW -->
+
+            <div class="backgroundCard">
+
+                <div class="backgroundImage snowBackground">
+
+                    <div class="snowMountains"></div>
+
+                    <div class="snowflakes">
+                        ❄️ ❄️ ❄️
+                    </div>
+
+                    <div class="pineTrees">
+                        🌲 🌲 🌲
+                    </div>
+
+                </div>
+
+                <h2>🏔️ Snow Mountains</h2>
+
+                <p>🪙 400</p>
+
+                <button
+                    class="backgroundButtonSelect"
+                    data-background="snow"
+                    onclick="buyBackground('snow', 400)"
+                >
+                    🪙 400
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="game.js"></script>
 
 </body>
 </html>
